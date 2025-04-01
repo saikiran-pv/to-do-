@@ -32,7 +32,7 @@ router.get('/', authenticate, async (req, res) => {
 
 // Add Task (POST /api/tasks)
 router.post('/', authenticate, async (req, res) => {
-    const { title, description, completed } = req.body;
+    const { title, description, completed, priority, category, dueDate } = req.body;
 
     console.log(title);
 
@@ -45,6 +45,9 @@ router.post('/', authenticate, async (req, res) => {
             title,
             description,
             completed,
+            priority,
+            category,
+            dueDate,
             user: req.user
         });
 
@@ -58,7 +61,7 @@ router.post('/', authenticate, async (req, res) => {
 
 // Update Task (PUT /api/tasks/:id)
 router.put('/:id', authenticate, async (req, res) => {
-    const { title, description, completed } = req.body;
+    const { title, description, completed, priority, category, dueDate } = req.body;
 
     try {
         const task = await Task.findOne({ _id: req.params.id, user: req.user });
@@ -69,6 +72,9 @@ router.put('/:id', authenticate, async (req, res) => {
         task.title = title || task.title;
         task.description = description || task.description;
         task.completed = completed !== undefined ? completed : task.completed;
+        task.priority = priority || task.priority
+        task.dueDate = dueDate || task.dueDate
+        task.category = category || task.category
 
         await task.save();
         res.json(task);
@@ -93,9 +99,9 @@ router.get("/:_id", authenticate, async (req, res) => {
 });
 
 // Delete Task (DELETE /api/tasks/:id)
-router.delete('/:id', authenticate, async (req, res) => {
+router.delete('/:_id', authenticate, async (req, res) => {
     try {
-        const taskId = req.params.id;
+        const taskId = req.params._id;
         const task = await Task.findOne({ _id: taskId, user: req.user });
         if (!task) {
             return res.status(404).json({ message: 'Task not found or not authorized' });

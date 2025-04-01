@@ -5,7 +5,10 @@ import Login from './pages/Login';        // Assuming Login component is created
 import Tasks from "./pages/Tasks";
 import TaskDetails from "./pages/TaskDetails";
 import NewTask from './pages/NewTask';
-// import Logout from "./pages/Logout";
+import About from './pages/About'; 
+import Footer from "./pages/footer";
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 
 
@@ -19,38 +22,57 @@ function App() {
   };
 
   return (
+    <AuthProvider>
     <Router>
-      <div>
+      <div className="min-h-screen flex flex-col">
         {/* Navigation Links */}
-        <nav>
-          <ul>
-            <li>
-              {isAuthenticated ? (
-                <> 
-                  <Link to="/tasks">Tasks</Link>
-                  <button onClick={handleLogout}>Logout</button>
-                </>
-              ) : (
-                <>
-                  <Link to="/register">Register</Link> {/* This is the name of the link */}
-                  <Link to="/login">Login</Link> {/* This is the name of the link */}
-                </>
-              )}
-            </li>
-          </ul>
-        </nav>
+        <div className="flex-grow">
+        <nav className=" bg-purple-500 p-4 h-16">
+        <Link to="/" className="text-white text-3xl font-bold">
+          TODO
+        </Link>
+        <ul className="flex space-x-4 float-right ">
+          <li className="text-whit items-center space-x-6">
+            {isAuthenticated ? (
+              <> 
+                <Link to="/tasks" className="hover:text-blue-300 transition">Tasks</Link>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400 transition"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/register" className="hover:text-blue-300 text-lg transition">Register</Link>
+                <Link to="/login" className="hover:text-blue-300 text-lg transition">Login</Link>
+              </>
+            )}
+          </li>
+        </ul>
+      </nav>
+
+     
+
 
         {/* Define Routes */}
         <Routes>
-          <Route path="/" element={<h1>Welcome to the To-Do App</h1>} />
-          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/" element={<About />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/tasks" element={<Tasks />} />
+          </Route>
           <Route path="/task/:_id" element={<TaskDetails />} />
+          <Route path="/newtask" element={<NewTask />} />
           <Route path="/login" element={<Login /> } />
           <Route path="/register" element={<Register />} />
-          <Route path="/newtask" element={<NewTask />} />
+          
         </Routes>
       </div>
+      </div>
+      <Footer />
     </Router>
+    </AuthProvider>
   );
 }
 

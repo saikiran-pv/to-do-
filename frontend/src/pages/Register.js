@@ -23,29 +23,37 @@ function Register() {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="flex items-center justify-center h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-96">
+      <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
+      <form className="space-y-4"  onSubmit={handleSubmit}>
+        <label className="block text-gray-700">Username</label>
         <input 
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           type="text" 
           placeholder="Username" 
           value={formData.username}
           onChange={(e) => setFormData({ ...formData, username: e.target.value })}
         />
+        <label className="block text-gray-700">Email</label>
         <input 
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           type="email" 
           placeholder="Email" 
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
         />
+        <label className="block text-gray-700">Password</label>
         <input 
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           type="password" 
           placeholder="Password" 
           value={formData.password}
           onChange={(e) => setFormData({ ...formData, password: e.target.value })}
         />
-        <button type="submit">Register</button>
+        <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">Register</button>
       </form>
+    </div>
     </div>
   );
 }

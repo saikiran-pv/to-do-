@@ -7,7 +7,6 @@ const NewTask = () => {
 
   return (
     <div>
-      <h2>Add New Task</h2>
       <TaskForm/>
     </div>
   );
